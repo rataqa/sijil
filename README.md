@@ -27,7 +27,7 @@ npm publish --access=public
 ## usage
 
 ```sh
-npm i rataqa/sijil
+npm i @rataqa/sijil
 ```
 
 TODO: example
