@@ -43,7 +43,7 @@ app.post('/', (req: IRequest, res: IResponse) => {
 });
 
 app.listen(3000, () => {
-  logger.info('Server is running on port 3000');
+  logger.defaultLogger.info('Server is running on port 3000');
 });
 
 interface IInputToAdd {
