@@ -1,4 +1,4 @@
-# sijil
+# @rataqa/sijil
 
 Logger using pino
 
