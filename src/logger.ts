@@ -21,7 +21,7 @@ const defaultOptions: LoggerOptions = {
   level: 'info',
 };
 
-export function makeLogger<TApp extends IAppInfo>(
+export function makeLogger<TApp extends IAppInfo = IAppInfo>(
   kind: 'pino' | 'console' | 'void',
   appInfo: TApp,
   options: LoggerOptions = {},
@@ -35,7 +35,7 @@ export function makeLogger<TApp extends IAppInfo>(
   }
 }
 
-export function makePinoLogger<TApp extends IAppInfo>(appInfo: TApp, options: LoggerOptions = {}) {
+export function makePinoLogger<TApp extends IAppInfo = IAppInfo>(appInfo: TApp, options: LoggerOptions = {}) {
   const _logger = pino(options);
 
   const defaultLogger = _logger.child(appInfo);
@@ -49,7 +49,7 @@ export function makePinoLogger<TApp extends IAppInfo>(appInfo: TApp, options: Lo
     };
   }
 
-  function makeLoggerPerRequest<TContext extends IHttpRequestContext>(ctx: TContext) {
+  function makeLoggerPerRequest<TContext extends IHttpRequestContext = IHttpRequestContext>(ctx: TContext) {
     return useLogger(defaultLogger.child(ctx));
   }
 
@@ -59,7 +59,7 @@ export function makePinoLogger<TApp extends IAppInfo>(appInfo: TApp, options: Lo
   };
 }
 
-export function makeConsoleLogger<TApp extends IAppInfo>(appInfo: TApp, options: LoggerOptions = {}) {
+export function makeConsoleLogger<TApp extends IAppInfo = IAppInfo>(appInfo: TApp, options: LoggerOptions = {}) {
   const levelKey = String(options.level || defaultOptions.level);
   const level = PINO_LEVELS[`${levelKey}`] || 0;
 
@@ -81,7 +81,7 @@ export function makeConsoleLogger<TApp extends IAppInfo>(appInfo: TApp, options:
     };
   }
 
-  function makeLoggerPerRequest<TContext extends IHttpRequestContext>(ctx: TContext) {
+  function makeLoggerPerRequest<TContext extends IHttpRequestContext = IHttpRequestContext>(ctx: TContext) {
     return useLogger(console, { ...appInfo, ...ctx });
   }
 
@@ -91,7 +91,7 @@ export function makeConsoleLogger<TApp extends IAppInfo>(appInfo: TApp, options:
   };
 }
 
-export function makeVoidLogger<TApp extends IAppInfo>(_appInfo: TApp, _config: LoggerOptions = {}) {
+export function makeVoidLogger<TApp extends IAppInfo = IAppInfo>(_appInfo: TApp, _config: LoggerOptions = {}) {
 
   const vl = {
       debug: () => {},
@@ -102,7 +102,7 @@ export function makeVoidLogger<TApp extends IAppInfo>(_appInfo: TApp, _config: L
 
   const defaultLogger = vl;
 
-  function makeLoggerPerRequest<TContext extends IHttpRequestContext>(_ctx: TContext) {
+  function makeLoggerPerRequest<TContext extends IHttpRequestContext = IHttpRequestContext>(_ctx: TContext) {
     return vl;
   }
 
