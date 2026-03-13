@@ -30,4 +30,4 @@ npm publish --access=public
 npm i @rataqa/sijil
 ```
 
-TODO: example
+Example: see [mock-app/](mock-app)
