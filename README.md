@@ -19,8 +19,9 @@ npm i
 npm run build
 
 # review/modify version number in package.json
-# publish
-npm publish
+# login and publish
+npm login
+npm publish --access=public
 ```
 
 ## usage
