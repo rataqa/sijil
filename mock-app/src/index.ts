@@ -13,10 +13,13 @@ const serviceA = makeServiceA();
 app.use(express.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.t0 = new Date();
+  const t0 = new Date();
 
   const correlation_id = req.get('x-correlation-id') || randomUUID();
-  res.locals.correlation_id = correlation_id;
+  res.locals.ctx = {
+    t0,
+    correlation_id,
+  };
 
   const rl = logger.makeLoggerPerRequest({ correlation_id });
 
