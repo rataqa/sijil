@@ -1,6 +1,6 @@
 import pino, { type LoggerOptions } from 'pino';
 
-import type { IAppInfo, IHttpRequestContext, IObject } from './types';
+import type { IAppInfo, IHttpRequestContext, ILogger, IObject } from './types';
 
 const { pid } = process, hostname = process.env.HOSTNAME;
 
@@ -25,7 +25,7 @@ export function makeLogger<TApp extends IAppInfo = IAppInfo>(
   kind: 'pino' | 'console' | 'void',
   appInfo: TApp,
   options: LoggerOptions = {},
-) {
+): ILogger {
   if (kind === 'pino') {
     return makePinoLogger(appInfo, { ...defaultOptions, ...options });
   } else if (kind === 'console') {
@@ -38,7 +38,7 @@ export function makeLogger<TApp extends IAppInfo = IAppInfo>(
 export function makePinoLogger<TApp extends IAppInfo = IAppInfo>(appInfo: TApp, options: LoggerOptions = {}) {
   const _logger = pino(options);
 
-  const defaultLogger = _logger.child(appInfo);
+  const _defaultLogger = _logger.child(appInfo);
 
   function useLogger(l: pino.Logger) {
     return {
@@ -50,11 +50,11 @@ export function makePinoLogger<TApp extends IAppInfo = IAppInfo>(appInfo: TApp, 
   }
 
   function makeLoggerPerRequest<TContext extends IHttpRequestContext = IHttpRequestContext>(ctx: TContext) {
-    return useLogger(defaultLogger.child(ctx));
+    return useLogger(_defaultLogger.child(ctx));
   }
 
   return {
-    ...useLogger(defaultLogger),
+    defaultLogger: useLogger(_defaultLogger),
     makeLoggerPerRequest,
   };
 }
@@ -86,7 +86,7 @@ export function makeConsoleLogger<TApp extends IAppInfo = IAppInfo>(appInfo: TAp
   }
 
   return {
-    ...useLogger(console, appInfo),
+    defaultLogger: useLogger(console, appInfo),
     makeLoggerPerRequest,
   };
 }
@@ -107,7 +107,7 @@ export function makeVoidLogger<TApp extends IAppInfo = IAppInfo>(_appInfo: TApp,
   }
 
   return {
-    ...defaultLogger,
+    defaultLogger,
     makeLoggerPerRequest,
   };
 }

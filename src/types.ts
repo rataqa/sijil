@@ -12,7 +12,7 @@ export interface IBasicLogger {
 }
 
 export interface ILogger {
-  defaultLogger       : IBasicLogger;
+  defaultLogger: IBasicLogger;
   makeLoggerPerRequest: <TContext extends IHttpRequestContext>(ctx: TContext) => IBasicLogger;
 }
 
