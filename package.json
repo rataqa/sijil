@@ -1,6 +1,6 @@
 {
   "name": "@rataqa/sijil",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Logger using pino",
   "type": "commonjs",
   "main": "dist/index.js",
